@@ -1,0 +1,9 @@
+node_modules/
+dist/
+version.json
+./dist
+**/*.zip
+.vscode
+.idea
+.DS_Store
+**/*.rar

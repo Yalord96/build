@@ -1,0 +1,108 @@
+@use "sass:math";
+@import "base/mixins";
+
+/* Include FONTS */
+// @include font('Rubik', Rubik-Regular, 400, normal);
+
+/* Default FONT */ 
+$fontSize: rem(14);
+$fontFamily: '';
+
+/* Basic COLOR */
+$mainColor: #000;
+
+/* Container */
+$minWidth: 320;
+$maxWidth: 1920;
+$maxWidthContainer: 1170;
+$containerPadding: 30;
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+/* Breakpoints */
+$pc: em($containerWidth);
+$tablet: em(991.98);
+$mobile: em(767.98);
+$mobileSmall: em(479.98);
+
+@import "base/null";
+
+/* Adaptive type:
+ 1 = responsiveness (the container has no breakpoints),
+ 2 = at the breakpoint (the container changes its width at the breakpoint)
+*/
+$responsiveType: 1;
+
+@if ($responsiveType==1) {
+	/* Responsive */
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: rem($containerWidth);
+			margin: 0 auto;
+		}
+		@if ($containerPadding>0) {
+			@if ($maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			} @else {
+				@include adaptiveValue("padding-left", math.div($containerPadding, 2), 15);
+				@include adaptiveValue("padding-right", math.div($containerPadding, 2), 15);
+			}
+		}
+	}
+} @else {
+	/* Break-points */
+	[class*="__container"] {
+		margin: 0 auto;
+		@if ($maxWidthContainer>0) {
+			max-width: rem($containerWidth);
+		} @else {
+			@if ($containerPadding>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+		@media (max-width: $pc) {
+			max-width: rem(970);
+		}
+		@media (max-width: $tablet) {
+			max-width: rem(750);
+		}
+		@media (max-width: $mobile) {
+			max-width: none;
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+@import "base/media";
+@import "common";
+@import "base";
+
+// body {
+// 	/* Scroll is locked */
+// 	.lock & {
+// 		overflow: hidden;
+// 		touch-action: none;
+// 		overscroll-behavior: none;
+// 	}
+// 	.loaded & {
+// 	}
+// }
+
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	@supports (overflow: clip) {
+		overflow: clip;
+	}
+	/* We press footer */
+	> main {
+		flex: 1 1 auto;
+	}
+	/* Fix for sliders */
+	> * {
+		min-width: 0;
+	}
+}
